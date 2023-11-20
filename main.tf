@@ -32,7 +32,7 @@ resource "aws_docdb_subnet_group" "main" {
   }
 }
 
- resource "aws_docdb_cluster" "docdb_cluster" {
+ resource "aws_docdb_cluster" "cluster" {
    cluster_identifier      = "${var.env}-${var.component}-docdb-cluster"
    master_username         = data.aws_ssm_parameter.master_username.value
    master_password         = data.aws_ssm_parameter.master_username.value
@@ -46,6 +46,6 @@ resource "aws_docdb_subnet_group" "main" {
  resource "aws_docdb_cluster_instance" "cluster_instances" {
    count              = var.docdb_instance_count
    identifier         = "${var.env}-${var.component}-${count.index}"
-   cluster_identifier = aws_docdb_cluster.docdb_cluster.id
+   cluster_identifier = aws_docdb_cluster.cluster.id
    instance_class     = var.docdb_instance_class
  }
