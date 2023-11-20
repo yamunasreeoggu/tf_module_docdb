@@ -32,7 +32,7 @@ resource "aws_docdb_subnet_group" "main" {
   }
 }
 
- resource "aws_docdb_cluster" "docdb" {
+ resource "aws_docdb_cluster" "docdb_cluster" {
    cluster_identifier      = "${var.env}-${var.component}-docdb-cluster"
    master_username         = data.aws_ssm_parameter.master_username.value
    master_password         = data.aws_ssm_parameter.master_username.value
@@ -40,4 +40,12 @@ resource "aws_docdb_subnet_group" "main" {
    engine                  = "docdb"
    engine_version          = "4.0.0"
    skip_final_snapshot     = true
+   kms_key_id              = var.kms_key_id
+ }
+
+ resource "aws_docdb_cluster_instance" "cluster_instances" {
+   count              = var.docdb_instance_count
+   identifier         = "${var.env}-${var.component}-${count.index}"
+   cluster_identifier = aws_docdb_cluster.docdb_cluster.id
+   instance_class     = var.docdb_instance_class
  }
