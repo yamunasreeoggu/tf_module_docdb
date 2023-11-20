@@ -41,6 +41,7 @@ resource "aws_docdb_subnet_group" "main" {
    engine_version          = "4.0.0"
    skip_final_snapshot     = true
    kms_key_id              = var.kms_key_id
+   storage_encrypted       = true
  }
 
  resource "aws_docdb_cluster_instance" "main" {
