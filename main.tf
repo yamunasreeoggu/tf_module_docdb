@@ -1,4 +1,4 @@
- resource "aws_security_group" "security_group" {
+ resource "aws_security_group" "main" {
   name        = "${var.env}-${var.component}-sg"
   description = "${var.env}-${var.component}-sg"
   vpc_id      = var.vpc_id
@@ -42,6 +42,7 @@ resource "aws_docdb_subnet_group" "main" {
    skip_final_snapshot     = true
    kms_key_id              = var.kms_key_id
    storage_encrypted       = true
+   vpc_security_group_ids = [aws_security_group.main.id]
  }
 
  resource "aws_docdb_cluster_instance" "main" {
